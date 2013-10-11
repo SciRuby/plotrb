@@ -5,7 +5,7 @@ module Plotrb
   # See {https://github.com/trifacta/vega/wiki/Data-Transforms}
   class Transform
 
-    include ::Plotrb::Base
+    include Plotrb::Base
 
     # all available types of transforms defined by Vega
     TYPES = %i(array copy cross facet filter flatten fold formula slice sort
@@ -14,7 +14,7 @@ module Plotrb
 
     TYPES.each do |t|
       define_singleton_method(t) do |&block|
-        ::Plotrb::Transform.new(t, &block)
+        Plotrb::Transform.new(t, &block)
       end
     end
 
@@ -27,7 +27,7 @@ module Plotrb
       @extra_fields = [:index, :data]
       self.send(@type)
       self.instance_eval(&block) if block_given?
-      ::Plotrb::Kernel.transforms << self
+      Plotrb::Kernel.transforms << self
       self
     end
 
@@ -445,10 +445,10 @@ module Plotrb
       return unless @type == :cross && @with
       case @with
         when String
-          unless ::Plotrb::Kernel.find_data(@with)
+          unless Plotrb::Kernel.find_data(@with)
             raise ArgumentError, 'Invalid data for cross transform'
           end
-        when ::Plotrb::Data
+        when Plotrb::Data
           @with = @with.name
         else
           raise ArgumentError, 'Invalid data for cross transform'
@@ -580,7 +580,7 @@ module Plotrb
           else
             "data.#{field}"
           end
-        when ::Plotrb::Data
+        when Plotrb::Data
           'data'
         else
           raise ArgumentError, 'Invalid data field'

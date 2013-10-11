@@ -1,8 +1,8 @@
-require_relative '../spec_helper'
+require 'spec_helper'
 
 describe 'Scale' do
 
-  subject { ::Plotrb::Scale.new }
+  subject { Plotrb::Scale.new }
 
   describe '#name' do
 
@@ -13,7 +13,7 @@ describe 'Scale' do
 
     it 'raises error if the name is not unique' do
       subject.name 'foo'
-      ::Plotrb::Kernel.stub(:duplicate_scale?).and_return(true)
+      Plotrb::Kernel.stub(:duplicate_scale?).and_return(true)
       expect { subject.send(:process_name) }.to raise_error(ArgumentError)
     end
 
@@ -32,12 +32,12 @@ describe 'Scale' do
     context 'when domain is a string reference to a data source' do
 
       before(:each) do
-        ::Plotrb::Kernel.stub(:find_data).and_return(::Plotrb::Data.new)
+        Plotrb::Kernel.stub(:find_data).and_return(::Plotrb::Data.new)
       end
 
       it 'separates data source and data field' do
         subject.from('some_data.some_field')
-        ::Plotrb::Data.any_instance.stub(:extra_fields).and_return([])
+        Plotrb::Data.any_instance.stub(:extra_fields).and_return([])
         subject.send(:process_domain)
         subject.domain.data.should == 'some_data'
         subject.domain.field.should == 'data.some_field'
@@ -45,7 +45,7 @@ describe 'Scale' do
 
       it 'defaults field to index if not provided' do
         subject.from('some_data')
-        ::Plotrb::Data.any_instance.stub(:extra_fields).and_return([])
+        Plotrb::Data.any_instance.stub(:extra_fields).and_return([])
         subject.send(:process_domain)
         subject.domain.data.should == 'some_data'
         subject.domain.field.should == 'index'
@@ -53,7 +53,7 @@ describe 'Scale' do
 
       it 'deals with index field properly' do
         subject.from('some_data.index')
-        ::Plotrb::Data.any_instance.stub(:extra_fields).and_return([])
+        Plotrb::Data.any_instance.stub(:extra_fields).and_return([])
         subject.send(:process_domain)
         subject.domain.data.should == 'some_data'
         subject.domain.field.should == 'index'
@@ -61,7 +61,7 @@ describe 'Scale' do
 
       it 'recognizes extra fields added by transform' do
         subject.from('some_data.field')
-        ::Plotrb::Data.any_instance.stub(:extra_fields).and_return([:field])
+        Plotrb::Data.any_instance.stub(:extra_fields).and_return([:field])
         subject.send(:process_domain)
         subject.domain.data.should == 'some_data'
         subject.domain.field.should == 'field'
@@ -142,7 +142,7 @@ describe 'Scale' do
 
     context 'when scale is time or utc' do
 
-      subject { ::Plotrb::Scale.time }
+      subject { Plotrb::Scale.time }
 
       it 'sets valid nice literal' do
         subject.in_seconds
@@ -158,7 +158,7 @@ describe 'Scale' do
 
     context 'when scale is quantitative' do
 
-      subject { ::Plotrb::Scale.linear }
+      subject { Plotrb::Scale.linear }
 
       it 'sets nice to true' do
         subject.nicely

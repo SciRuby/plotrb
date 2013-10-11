@@ -1,9 +1,9 @@
-require_relative '../spec_helper'
+require 'spec_helper'
 
 describe 'Base' do
 
   class FooClass
-    include ::Plotrb::Base
+    include Plotrb::Base
   end
 
   class BarClass
@@ -14,7 +14,7 @@ describe 'Base' do
 
   describe 'ClassMethods' do
 
-    let(:foo) { Class.new { include ::Plotrb::Base } }
+    let(:foo) { Class.new { include Plotrb::Base } }
 
     describe '.attributes' do
 
@@ -268,7 +268,7 @@ describe 'Base' do
 
   describe '#classify' do
 
-    let(:foo) { Class.new { extend ::Plotrb::Base } }
+    let(:foo) { Class.new { extend Plotrb::Base } }
 
     it 'classifies string' do
       foo.classify('visualization').should == 'Visualization'

@@ -1,8 +1,8 @@
-require_relative '../spec_helper'
+require 'spec_helper'
 
 describe 'Axis' do
 
-  subject { ::Plotrb::Axis.new(:x) }
+  subject { Plotrb::Axis.new(:x) }
 
   describe '#type' do
 
@@ -21,7 +21,7 @@ describe 'Axis' do
     end
 
     it 'sets the scale backing the axis by the scale object' do
-      scale = ::Plotrb::Scale.new.name('foo_scale')
+      scale = Plotrb::Scale.new.name('foo_scale')
       subject.from(scale)
       subject.send(:process_scale)
       subject.scale.should == 'foo_scale'
@@ -29,7 +29,7 @@ describe 'Axis' do
 
     it 'raises error if scale is not found' do
       subject.from('foo_scale')
-      ::Plotrb::Kernel.stub(:find_scale).and_return(nil)
+      Plotrb::Kernel.stub(:find_scale).and_return(nil)
       expect { subject.send(:process_scale) }.to raise_error(ArgumentError)
     end
 

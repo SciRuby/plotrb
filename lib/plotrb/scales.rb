@@ -5,13 +5,13 @@ module Plotrb
   # See {https://github.com/trifacta/vega/wiki/Scales}
   class Scale
 
-    include ::Plotrb::Base
+    include Plotrb::Base
 
     TYPES = %i(linear log pow sqrt quantile quantize threshold ordinal time utc)
 
     TYPES.each do |t|
       define_singleton_method(t) do |&block|
-        ::Plotrb::Scale.new(t, &block)
+        Plotrb::Scale.new(t, &block)
       end
     end
 
@@ -36,7 +36,7 @@ module Plotrb
           set_quantitative_scale_attributes
       end
       set_common_scale_attributes
-      ::Plotrb::Kernel.scales << self
+      Plotrb::Kernel.scales << self
       self.instance_eval(&block) if block_given?
       self
     end
@@ -180,7 +180,7 @@ module Plotrb
       if @name.nil? || @name.strip.empty?
         raise ArgumentError, 'Name missing for Scale object'
       end
-      if ::Plotrb::Kernel.duplicate_scale?(@name)
+      if Plotrb::Kernel.duplicate_scale?(@name)
         raise ArgumentError, 'Duplicate names for Scale object'
       end
     end
@@ -196,7 +196,7 @@ module Plotrb
       case @domain
         when String
           @domain = get_data_ref_from_string(@domain)
-        when ::Plotrb::Data
+        when Plotrb::Data
           @domain = get_data_ref_from_data(@domain)
         when Array
           if @domain.all? { |d| is_data_ref?(d) }
@@ -205,7 +205,7 @@ module Plotrb
           else
             # leave as it is
           end
-        when ::Plotrb::Scale::DataRef
+        when Plotrb::Scale::DataRef
           # leave as it is
         else
           raise ArgumentError, 'Unsupported Scale domain type'
@@ -218,7 +218,7 @@ module Plotrb
       case @domain_min
         when String
           @domain_min = get_data_ref_from_string(@domain_min)
-        when ::Plotrb::Data
+        when Plotrb::Data
           @domain_min = get_data_ref_from_data(@domain_min)
         when Array
           if @domain_min.all? { |d| is_data_ref?(d) }
@@ -240,7 +240,7 @@ module Plotrb
       case @domain_max
         when String
           @domain_max = get_data_ref_from_string(@domain_max)
-        when ::Plotrb::Data
+        when Plotrb::Data
           @domain_max = get_data_ref_from_data(@domain_max)
         when Array
           if @domain_max.all? { |d| is_data_ref?(d) }
@@ -258,36 +258,36 @@ module Plotrb
 
     def get_data_ref_from_string(ref)
       source, field = ref.split('.', 2)
-      data = ::Plotrb::Kernel.find_data(source)
+      data = Plotrb::Kernel.find_data(source)
       if field.nil?
         if data && data.values.is_a?(Array)
-          ::Plotrb::Scale::DataRef.new.data(source).field('data')
+          Plotrb::Scale::DataRef.new.data(source).field('data')
         else
-          ::Plotrb::Scale::DataRef.new.data(source).field('index')
+          Plotrb::Scale::DataRef.new.data(source).field('index')
         end
       elsif field == 'index'
-        ::Plotrb::Scale::DataRef.new.data(source).field('index')
+        Plotrb::Scale::DataRef.new.data(source).field('index')
       else
         if data.extra_fields.include?(field.to_sym)
-          ::Plotrb::Scale::DataRef.new.data(source).field(field)
+          Plotrb::Scale::DataRef.new.data(source).field(field)
         else
-          ::Plotrb::Scale::DataRef.new.data(source).field("data.#{field}")
+          Plotrb::Scale::DataRef.new.data(source).field("data.#{field}")
         end
       end
     end
 
     def get_data_ref_from_data(data)
       if data.values.is_a?(Array)
-        ::Plotrb::Scale::DataRef.new.data(data.name).field('data')
+        Plotrb::Scale::DataRef.new.data(data.name).field('data')
       else
-        ::Plotrb::Scale::DataRef.new.data(data.name).field('index')
+        Plotrb::Scale::DataRef.new.data(data.name).field('index')
       end
     end
 
     def is_data_ref?(ref)
       return false unless ref.is_a?(String)
       source, _ = ref.split('.', 2)
-      not ::Plotrb::Kernel.find_data(source).nil?
+      not Plotrb::Kernel.find_data(source).nil?
     end
 
     def process_range
@@ -318,7 +318,7 @@ module Plotrb
     # A data reference specifies the field for a given scale property
     class DataRef
 
-      include ::Plotrb::Base
+      include Plotrb::Base
 
       # @!attributes data
       #   @return [String] the name of a data set

@@ -1,4 +1,4 @@
-require_relative '../spec_helper'
+require 'spec_helper'
 
 describe 'Transform' do
 
@@ -51,7 +51,7 @@ describe 'Transform' do
 
     it 'raises error if the secondary data does not exist' do
       subject.with('foo')
-      ::Plotrb::Kernel.stub(:find_data).and_return(nil)
+      Plotrb::Kernel.stub(:find_data).and_return(nil)
       expect { subject.send(:process_cross_with) }.to raise_error(ArgumentError)
     end
 

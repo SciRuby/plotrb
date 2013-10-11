@@ -1,11 +1,11 @@
-require_relative '../spec_helper'
+require 'spec_helper'
 
-describe 'Visualization', :broken => true do
+describe 'Visualization', broken: true do
 
   context 'properties' do
 
-    before(:each) do
-      @vis = ::Plotrb::Visualization.new
+    before :each do
+      @vis = Plotrb::Visualization.new
     end
 
     it 'sets name' do
@@ -14,7 +14,7 @@ describe 'Visualization', :broken => true do
     end
 
     it 'raises error when name is nil' do
-      expect { @vis.name = nil }.to raise_error ::Plotrb::InvalidInputError
+      expect { @vis.name = nil }.to raise_error Plotrb::InvalidInputError
     end
 
     it 'sets width when given' do
@@ -27,7 +27,7 @@ describe 'Visualization', :broken => true do
     end
 
     it 'raises error when width is not a number' do
-      expect { @vis.width = [:foo] }.to raise_error ::Plotrb::InvalidInputError
+      expect { @vis.width = [:foo] }.to raise_error Plotrb::InvalidInputError
     end
 
     it 'sets height when given' do
@@ -40,7 +40,7 @@ describe 'Visualization', :broken => true do
     end
 
     it 'raises error when height is not a number' do
-      expect { @vis.height = [:foo] }.to raise_error ::Plotrb::InvalidInputError
+      expect { @vis.height = [:foo] }.to raise_error Plotrb::InvalidInputError
     end
 
     it 'sets viewport when given as an array' do
@@ -54,13 +54,13 @@ describe 'Visualization', :broken => true do
     end
 
     it 'sets viewport to default width and height when not given' do
-      vis = ::Plotrb::Visualization.new(:width => 300, :height => 400)
+      vis = Plotrb::Visualization.new(:width => 300, :height => 400)
       vis.viewport.should == [300, 400]
     end
 
     it 'raises error when viewport contains nil' do
       expect { @vis.viewport = [100, :foo] }.
-          to raise_error ::Plotrb::InvalidInputError
+          to raise_error Plotrb::InvalidInputError
     end
 
     it 'sets padding when given as an integer' do
@@ -79,13 +79,13 @@ describe 'Visualization', :broken => true do
 
     it 'raises error when any padding value is missing' do
       expect { @vis.padding = {:top => 4} }.
-          to raise_error ::Plotrb::InvalidInputError
+          to raise_error Plotrb::InvalidInputError
     end
 
     it 'raises error when any padding value is not a number' do
       expect { @vis.padding = {
           :top => 4, :left => :foo, :right => 'bar', :bottom => nil
-      } }.to raise_error ::Plotrb::InvalidInputError
+      } }.to raise_error Plotrb::InvalidInputError
     end
 
   end

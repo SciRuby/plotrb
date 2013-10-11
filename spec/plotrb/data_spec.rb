@@ -1,8 +1,8 @@
-require_relative '../spec_helper'
+require 'spec_helper'
 
 describe 'Data' do
 
-  subject { ::Plotrb::Data.new }
+  subject { Plotrb::Data.new }
 
   describe '#name' do
 
@@ -21,7 +21,7 @@ describe 'Data' do
     end
 
     it 'raises error if name is not unique' do
-      ::Plotrb::Kernel.stub(:duplicate_data?).and_return(false)
+      Plotrb::Kernel.stub(:duplicate_data?).and_return(false)
       expect { subject.send(:process_name) }.to raise_error(ArgumentError)
     end
 
@@ -30,7 +30,7 @@ describe 'Data' do
   describe '#format' do
 
     it 'sets format as a new Format instance' do
-      ::Plotrb::Data::Format.should_receive(:new).with(:foo)
+      Plotrb::Data::Format.should_receive(:new).with(:foo)
       subject.format(:foo)
     end
 
@@ -68,13 +68,13 @@ describe 'Data' do
     end
 
     it 'raises error if source does not exist' do
-      ::Plotrb::Kernel.stub(:find_data).and_return(false)
+      Plotrb::Kernel.stub(:find_data).and_return(false)
       subject.source('foo')
       expect { subject.send(:process_source) }.to raise_error ArgumentError
     end
 
     it 'gets the name of the existing data object' do
-      foo = ::Plotrb::Data.new.name('foo')
+      foo = Plotrb::Data.new.name('foo')
       subject.source(foo)
       subject.send(:process_source)
       subject.source.should == 'foo'
@@ -113,7 +113,7 @@ describe 'Data' do
 
     class Bar; end
 
-    let(:foo) { ::Plotrb::Transform.new(:array) }
+    let(:foo) { Plotrb::Transform.new(:array) }
     let(:bar) { Bar.new }
 
     it 'sets transform if a transform object is given' do
@@ -145,12 +145,12 @@ describe 'Data' do
   describe 'Format' do
 
     it 'raises error if format type is not recognized' do
-      expect { ::Plotrb::Data::Format.new(:foo) }.to raise_error ArgumentError
+      expect { Plotrb::Data::Format.new(:foo) }.to raise_error ArgumentError
     end
 
     context 'json' do
 
-      subject { ::Plotrb::Data::Format.new(:json) }
+      subject { Plotrb::Data::Format.new(:json) }
 
       it 'has parse and property attributes' do
         subject.attributes.should match_array([:type, :parse, :property])
@@ -215,7 +215,7 @@ describe 'Data' do
 
     context 'csv' do
 
-      subject { ::Plotrb::Data::Format.new(:csv) }
+      subject { Plotrb::Data::Format.new(:csv) }
 
       it 'has parse attribute' do
         subject.attributes.should match_array([:type, :parse])
@@ -225,7 +225,7 @@ describe 'Data' do
 
     context 'tsv' do
 
-      subject { ::Plotrb::Data::Format.new(:tsv) }
+      subject { Plotrb::Data::Format.new(:tsv) }
 
       it 'has parse attribute' do
         subject.attributes.should match_array([:type, :parse])
@@ -235,7 +235,7 @@ describe 'Data' do
 
     context 'topojson' do
 
-      subject { ::Plotrb::Data::Format.new(:topojson) }
+      subject { Plotrb::Data::Format.new(:topojson) }
 
       it 'has feature and mesh attribute' do
         subject.attributes.should match_array([:type, :feature, :mesh])
@@ -245,7 +245,7 @@ describe 'Data' do
 
     context 'treejson' do
 
-      subject { ::Plotrb::Data::Format.new(:treejson) }
+      subject { Plotrb::Data::Format.new(:treejson) }
 
       it 'has parse and children attribute' do
         subject.attributes.should match_array([:type, :parse, :children])

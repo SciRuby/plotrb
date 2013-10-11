@@ -28,8 +28,6 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #++
 
-require 'plotrb'
-
 module Plotrb
   module Simple
 

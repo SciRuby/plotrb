@@ -58,47 +58,47 @@ module Plotrb
       @transforms ||= []
     end
 
-    # Initialize ::Plotrb::Visualization object
+    # Initialize Plotrb::Visualization object
 
     def visualization(&block)
-      ::Plotrb::Visualization.new(&block)
+      Plotrb::Visualization.new(&block)
     end
 
-    # Initialize ::Plotrb::Data objects
+    # Initialize Plotrb::Data objects
 
     def pdata(&block)
-      ::Plotrb::Data.new(&block)
+      Plotrb::Data.new(&block)
     end
 
     def method_missing(method, *args, &block)
       case method.to_s
         when /^(\w)_axis$/
-          # Initialize ::Plotrb::Axis objects
-          if ::Plotrb::Axis::TYPES.include?($1.to_sym)
+          # Initialize Plotrb::Axis objects
+          if Plotrb::Axis::TYPES.include?($1.to_sym)
             cache_method($1, 'axis')
             self.send(method)
           else
             super
           end
         when /^(\w+)_scale$/
-          # Initialize ::Plotrb::Scale objects
-          if ::Plotrb::Scale::TYPES.include?($1.to_sym)
+          # Initialize Plotrb::Scale objects
+          if Plotrb::Scale::TYPES.include?($1.to_sym)
             cache_method($1, 'scale')
             self.send(method)
           else
             super
           end
         when /^(\w+)_transform$/
-          # Initialize ::Plotrb::Transform objects
-          if ::Plotrb::Transform::TYPES.include?($1.to_sym)
+          # Initialize Plotrb::Transform objects
+          if Plotrb::Transform::TYPES.include?($1.to_sym)
             cache_method($1, 'transform')
             self.send(method)
           else
             super
           end
         when /^(\w+)_mark$/
-          # Initialize ::Plotrb::Mark objects
-          if ::Plotrb::Mark::TYPES.include?($1.to_sym)
+          # Initialize Plotrb::Mark objects
+          if Plotrb::Mark::TYPES.include?($1.to_sym)
             cache_method($1, 'mark')
             self.send(method)
           else
@@ -116,7 +116,7 @@ module Plotrb
         define_method("#{type}_#{klass}") do |&block|
           # class names are constants
           # create shortcut methods to initialize Plotrb objects
-          ::Kernel::const_get("::Plotrb::#{klass.capitalize}").
+          Kernel::const_get("::Plotrb::#{klass.capitalize}").
               new(type.to_sym, &block)
         end
       }

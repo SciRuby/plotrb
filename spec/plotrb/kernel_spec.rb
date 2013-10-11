@@ -1,9 +1,9 @@
-require_relative '../spec_helper'
+require 'spec_helper'
 
 describe 'Kernel' do
 
   class Object
-    include ::Plotrb::Kernel
+    include Plotrb::Kernel
   end
 
   describe '#visualization' do
