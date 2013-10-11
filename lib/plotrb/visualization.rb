@@ -4,8 +4,8 @@ module Plotrb
   # See {https://github.com/trifacta/vega/wiki/Visualization}
   class Visualization
 
-    include ::Plotrb::Base
-    include ::Plotrb::Kernel
+    include Plotrb::Base
+    include Plotrb::Kernel
 
     # @!attributes name
     #   @return [String] the name of the visualization

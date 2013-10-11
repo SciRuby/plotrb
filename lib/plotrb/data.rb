@@ -4,7 +4,7 @@ module Plotrb
   # See {https://github.com/trifacta/vega/wiki/Data}
   class Data
 
-    include ::Plotrb::Base
+    include Plotrb::Base
 
     # @!attributes name
     #   @return [String] the name of the data set
@@ -27,7 +27,7 @@ module Plotrb
         alias_method :file, :url
       }
       self.instance_eval(&block) if block_given?
-      ::Plotrb::Kernel.data << self
+      Plotrb::Kernel.data << self
       self
     end
 
@@ -36,7 +36,7 @@ module Plotrb
         when 0
           @format
         when 1
-          @format = ::Plotrb::Data::Format.new(args[0].to_sym, &block)
+          @format = Plotrb::Data::Format.new(args[0].to_sym, &block)
           self
         else
           raise ArgumentError, 'Invalid Data format'
@@ -76,7 +76,7 @@ module Plotrb
       if @name.nil? || @name.strip.empty?
         raise ArgumentError, 'Name missing for Data object'
       end
-      if ::Plotrb::Kernel.duplicate_data?(@name)
+      if Plotrb::Kernel.duplicate_data?(@name)
         raise ArgumentError, 'Duplicate names for Data object'
       end
     end
@@ -101,10 +101,10 @@ module Plotrb
       return unless @source
       case source
         when String
-          unless ::Plotrb::Kernel.find_data(@source)
+          unless Plotrb::Kernel.find_data(@source)
             raise ArgumentError, 'Source Data not found'
           end
-        when ::Plotrb::Data
+        when Plotrb::Data
           @source = @source.name
         else
           raise ArgumentError, 'Unknown Data source'
@@ -129,7 +129,7 @@ module Plotrb
 
     class Format
 
-      include ::Plotrb::Base
+      include Plotrb::Base
 
       add_attributes :type
 

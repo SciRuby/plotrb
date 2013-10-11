@@ -5,13 +5,13 @@ module Plotrb
   # See {https://github.com/trifacta/vega/wiki/Axes}
   class Axis
 
-    include ::Plotrb::Base
+    include Plotrb::Base
 
     TYPES = %i(x y)
 
     TYPES.each do |t|
       define_singleton_method(t) do |&block|
-        ::Plotrb::Axis.new(t, &block)
+        Plotrb::Axis.new(t, &block)
       end
     end
 
@@ -77,7 +77,7 @@ module Plotrb
         alias_method :with_grid?, :grid?
       }
       self.instance_eval(&block) if block_given?
-      ::Plotrb::Kernel.axes << self
+      Plotrb::Kernel.axes << self
       self
     end
 
@@ -115,7 +115,7 @@ module Plotrb
       @properties ||= {}
       return @properties unless element
       @properties.merge!(
-          element.to_sym => ::Plotrb::Mark::MarkProperty.new(:text, &block)
+          element.to_sym => Plotrb::Mark::MarkProperty.new(:text, &block)
       )
       self
     end
@@ -156,10 +156,10 @@ module Plotrb
       return unless @scale
       case @scale
         when String
-          unless ::Plotrb::Kernel.find_scale(@scale)
+          unless Plotrb::Kernel.find_scale(@scale)
             raise ArgumentError, 'Scale not found'
           end
-        when ::Plotrb::Scale
+        when Plotrb::Scale
           @scale = @scale.name
         else
           raise ArgumentError, 'Unknown Scale'

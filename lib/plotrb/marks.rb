@@ -4,14 +4,14 @@ module Plotrb
   # See {https://github.com/trifacta/vega/wiki/Marks}
   class Mark
 
-    include ::Plotrb::Base
+    include Plotrb::Base
 
     # all available types of marks defined by Vega
     TYPES = %i(rect symbol path arc area line image text group)
 
     TYPES.each do |t|
       define_singleton_method(t) do |&block|
-        ::Plotrb::Mark.new(t, &block)
+        Plotrb::Mark.new(t, &block)
       end
     end
 
@@ -48,7 +48,7 @@ module Plotrb
         add_attributes(:scales, :axes, :marks)
         define_multi_val_attributes(:scales, :axes, :marks)
       end
-      ::Plotrb::Kernel.marks << self
+      Plotrb::Kernel.marks << self
       self.instance_eval(&block) if block_given?
       self
     end
@@ -65,7 +65,7 @@ module Plotrb
       process_from
       data = @from[:data] if @from
       @properties.merge!(
-          { enter: ::Plotrb::Mark::MarkProperty.
+          { enter: Plotrb::Mark::MarkProperty.
               new(@type, data, &block) }
       )
       self
@@ -75,7 +75,7 @@ module Plotrb
       process_from
       data = @from[:data] if @from
       @properties.merge!(
-          { exit: ::Plotrb::Mark::MarkProperty.
+          { exit: Plotrb::Mark::MarkProperty.
               new(@type, data, &block) }
       )
       self
@@ -85,7 +85,7 @@ module Plotrb
       process_from
       data = @from[:data] if @from
       @properties.merge!(
-          { update: ::Plotrb::Mark::MarkProperty.
+          { update: Plotrb::Mark::MarkProperty.
               new(@type, data, &block) }
       )
       self
@@ -95,7 +95,7 @@ module Plotrb
       process_from
       data = @from[:data] if @from
       @properties.merge!(
-          { hover: ::Plotrb::Mark::MarkProperty.
+          { hover: Plotrb::Mark::MarkProperty.
               new(@type, data, &block) }
       )
       self
@@ -111,7 +111,7 @@ module Plotrb
 
     def process_name
       return unless @name
-      if ::Plotrb::Kernel.duplicate_mark?(@name)
+      if Plotrb::Kernel.duplicate_mark?(@name)
         raise ArgumentError, 'Duplicate Mark name'
       end
     end
@@ -122,14 +122,14 @@ module Plotrb
       @from.each do |f|
         case f
           when String
-            if ::Plotrb::Kernel.find_data(f)
+            if Plotrb::Kernel.find_data(f)
               from[:data] = f
             else
               raise ArgumentError, 'Invalid data for Mark from'
             end
-          when ::Plotrb::Data
+          when Plotrb::Data
             from[:data] = f.name
-          when ::Plotrb::Transform
+          when Plotrb::Transform
             from[:transform] ||= []
             from[:transform] << f
           else
@@ -159,7 +159,7 @@ module Plotrb
 
     class MarkProperty
 
-      include ::Plotrb::Base
+      include Plotrb::Base
 
       # Shared visual properties
 
@@ -326,7 +326,7 @@ module Plotrb
       def define_single_val_attribute(method)
         define_singleton_method(method) do |*args, &block|
           if block
-            val = ::Plotrb::Mark::MarkProperty::ValueRef.
+            val = Plotrb::Mark::MarkProperty::ValueRef.
                 new(@data, *args, &block)
             self.instance_variable_set("@#{method}", val)
           else
@@ -334,7 +334,7 @@ module Plotrb
               when 0
                 self.instance_variable_get("@#{method}")
               when 1
-                val = ::Plotrb::Mark::MarkProperty::ValueRef.new(@data, args[0])
+                val = Plotrb::Mark::MarkProperty::ValueRef.new(@data, args[0])
                 self.instance_variable_set("@#{method}", val)
               else
                 raise ArgumentError
@@ -351,7 +351,7 @@ module Plotrb
       # A value reference specifies the value for a given mark property
       class ValueRef
 
-        include ::Plotrb::Base
+        include Plotrb::Base
 
         # @!attributes value
         #   @return A constant value
@@ -417,10 +417,10 @@ module Plotrb
           return unless @scale
           case @scale
             when String
-              unless ::Plotrb::Kernel.find_scale(@scale)
+              unless Plotrb::Kernel.find_scale(@scale)
                 raise ArgumentError, 'Invalid value scale'
               end
-            when ::Plotrb::Scale
+            when Plotrb::Scale
               @scale = @scale.name
             when Hash
               if @scale[:field]
@@ -438,7 +438,7 @@ module Plotrb
           data = if @data.is_a?(::Plotrb::Data)
                    @data
                  else
-                   ::Plotrb::Kernel.find_data(@data)
+                   Plotrb::Kernel.find_data(@data)
                  end
           extra_fields = (data.extra_fields if data) || []
           if field.to_s.start_with?('data.')
