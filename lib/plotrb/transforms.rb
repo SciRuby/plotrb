@@ -574,6 +574,8 @@ module Plotrb
 
     def get_full_field_ref(field)
       case field
+        when Symbol
+          "data.#{field}"
         when String
           if field.start_with?('data.') || extra_fields.include?(field.to_sym)
             field
