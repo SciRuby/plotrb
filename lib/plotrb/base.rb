@@ -111,7 +111,7 @@ module Plotrb
             self.instance_eval(&block) if block
             self
           else
-            raise ArgumentError, "wrong number of arguments (#{args.size} for 0..1"
+            raise ArgumentError, "wrong number of arguments (#{args.size} for 0..1)"
         end
       end
     end
