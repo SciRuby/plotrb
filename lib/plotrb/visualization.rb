@@ -44,6 +44,27 @@ module Plotrb
       end
     end
 
+    def to_iruby
+      ['text/html', %{
+<div id='vis-#{name}'></div>
+<script type='text/javascript'>
+  $(function() {
+    function render() {
+      vg.parse.spec(#{generate_spec}, function(chart) { view = chart({el:'#vis-#{name}'}).update(); });
+    }
+    if (typeof window.vg === 'undefined') {
+      window.addEventListener('load_plotrb', render, false);
+    } else {
+      render();
+    }
+ });
+</script>}]
+    end
+
+    def show
+      IRuby.display(self)
+    end
+
   private
 
     def attribute_post_processing
