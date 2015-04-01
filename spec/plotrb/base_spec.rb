@@ -282,6 +282,11 @@ describe 'Base' do
       foo.classify('foo_bar_baz', :json).should == 'fooBarBaz'
     end
 
+    it 'classifies zero-length and nil string correctly' do
+      foo.classify('').should == ''
+      foo.classify(nil).should == nil
+    end
+
   end
 
   describe 'Hash' do

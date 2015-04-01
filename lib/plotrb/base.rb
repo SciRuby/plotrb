@@ -141,6 +141,7 @@ module Plotrb
     end
 
     def classify(name, format=nil)
+      return unless name
       klass = name.to_s.split('_').collect(&:capitalize).join
       if format == :json
         klass[0].downcase + klass[1..-1]
@@ -178,6 +179,7 @@ module Plotrb
       end
 
       def classify(name, format=nil)
+        return unless name
         klass = name.to_s.split('_').collect(&:capitalize).join
         if format == :json
           klass[0].downcase + klass[1..-1]

@@ -40,7 +40,7 @@ describe 'Scale' do
         ::Plotrb::Data.any_instance.stub(:extra_fields).and_return([])
         subject.send(:process_domain)
         subject.domain.data.should == 'some_data'
-        subject.domain.field.should == 'data.some_field'
+        subject.domain.field.should == 'data.someField'
       end
 
       it 'defaults field to index if not provided' do
