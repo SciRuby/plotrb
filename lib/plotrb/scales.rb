@@ -258,6 +258,7 @@ module Plotrb
 
     def get_data_ref_from_string(ref)
       source, field = ref.split('.', 2)
+      field = classify(field, :json)
       data = ::Plotrb::Kernel.find_data(source)
       if field.nil?
         if data && data.values.is_a?(Array)
@@ -278,9 +279,9 @@ module Plotrb
 
     def get_data_ref_from_data(data)
       if data.values.is_a?(Array)
-        ::Plotrb::Scale::DataRef.new.data(data.name).field('data')
+        ::Plotrb::Scale::DataRef.new.data(classify(data.name)).field('data')
       else
-        ::Plotrb::Scale::DataRef.new.data(data.name).field('index')
+        ::Plotrb::Scale::DataRef.new.data(classify(data.name)).field('index')
       end
     end
 
